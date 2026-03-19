@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ===== ADMIN LAYOUT ===== */
+
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+h2, h3 {
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 26px;
+}
+
+h3 {
+    font-size: 18px;
+    color: #ccc;
+}
+
+/* ===== HEADER AREA ===== */
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+#logoutBtn {
+    background: #dc2626;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+}
+
+#logoutBtn:hover {
+    opacity: 0.85;
+}
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #2b2f5c, #3d3f7a);
+    color: white;
+    margin: 0;
+    min-height: 100vh;
+}
+
+
+.admin-card {
+    background: #1c1c2b;
+    padding: 30px;
+    border-radius: 16px;
+    margin-bottom: 50px;
+    border: 1px solid rgba(168,85,247,0.25);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+.admin-grid input,
+.admin-grid textarea {
+    background: #18182a;
+    border: 1px solid #2e2e45;
+    padding: 12px;
+    border-radius: 10px;
+    transition: 0.25s ease;
+}
+
+.admin-grid input:focus,
+.admin-grid textarea:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 10px rgba(168,85,247,0.3);
+    outline: none;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.admin-grid textarea {
+    grid-column: span 2;
+    min-height: 100px;
+}
+
+.admin-grid input,
+.admin-grid textarea {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #333;
+    background: #2a2a2a;
+    color: white;
+}
+
+.admin-btn {
+    padding: 12px 20px;
+    background: #a855f7;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+}
+
+.admin-btn:hover {
+    background: #9333ea;
+}
+
+/* ===== MODERN MINI PROJECT CARDS ===== */
+
+#adminProjectsContainer {
+    margin-top: 20px;
+}
+.project-admin-card {
+    background: #1f1f2e;
+    border-radius: 10px;
+    padding: 12px 14px;
+    border: 1px solid rgba(168,85,247,0.25);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s ease;
+}
+
+.project-admin-card:hover {
+    background: #25253a;
+    transform: translateY(-2px);
+}
+
+.project-admin-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 2px;
+}
+
+.project-admin-file {
+    font-size: 11px;
+    color: #aaa;
+}
+
+.project-admin-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.project-admin-actions button {
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.edit-btn {
+    background: #2563eb;
+    color: white;
+}
+
+.delete-btn {
+    background: #dc2626;
+    color: white;
+}
+
+.project-admin-actions button:hover {
+    opacity: 0.85;
+}
+
+/* === PROJECT GRID LAYOUT === */
+
+#adminProjectsContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+}
+
+/* === CERTIFICATE GRID LAYOUT === */
+
+#adminCertificatesContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+}
+
+/* === CERTIFICATE ADMIN CARD === */
+
+.certificate-admin-card {
+    background: #1f1f2e;
+    border-radius: 10px;
+    padding: 12px 14px;
+    border: 1px solid rgba(168,85,247,0.25);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s ease;
+}
+
+.certificate-admin-card:hover {
+    background: #25253a;
+    transform: translateY(-2px);
+}
+
+.certificate-admin-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 2px;
+}
+
+.certificate-admin-issuer {
+    font-size: 11px;
+    color: #aaa;
+}
+
+.certificate-admin-actions {
+    display: flex;
+    gap: 6px;
+}
+
+/* ===== ADD SKILL SECTION ===== */
+
+#skillName, #skillIcon {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #333;
+    background: #1f1f2e;
+    color: white;
+    margin-right: 10px;
+    width: 180px;
+}
+
+#addSkillBtn {
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: none;
+    background: #a855f7;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+#addSkillBtn:hover {
+    background: #9333ea;
+    transform: translateY(-1px);
+}
+
+/* ===== SKILL MINI CARDS ===== */
+
+#adminSkillsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.skill-admin-card {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #1f1f2e;
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(168,85,247,0.3);
+    transition: 0.2s ease;
+}
+
+.skill-admin-card:hover {
+    background: #26263d;
+    transform: translateY(-2px);
+}
+
+.skill-admin-card button {
+    background: #dc2626;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 11px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+
+/* ===== MESSAGE CARDS ===== */
+
+#messagesContainer {
+    margin-top: 20px;
+}
+/* === COMPACT MESSAGE CARD === */
+
+.message-card {
+    background: #1f1f2e;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border-left: 4px solid #a855f7;
+    transition: 0.2s ease;
+    position: relative;
+}
+
+.message-card:hover {
+    background: #25253a;
+    transform: translateY(-2px);
+}
+
+.message-name {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.message-email {
+    font-size: 11px;
+    color: #aaa;
+    margin-bottom: 6px;
+}
+
+.message-text {
+    font-size: 13px;
+    color: #ddd;
+}
+
+.message-delete {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: #dc2626;
+    border: none;
+    color: white;
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.message-delete:hover {
+    opacity: 0.85;
+}
+
+/* === MESSAGE GRID LAYOUT === */
+
+#messagesContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+}
+
+#loginSection {
+    background: #1c1c2b;
+    padding: 30px;
+    border-radius: 16px;
+    max-width: 400px;
+    margin: 100px auto;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+#loginSection input {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #141421;
+    color: white;
+}
+
+#loginSection,
+#adminPanel {
+    transition: 0.3s ease;
+}
+
+.admin-card,
+#adminProjectsContainer,
+#adminCertificatesContainer,
+#adminSkillsContainer,
+#messagesContainer {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    padding: 25px;
+    margin-bottom: 40px;
+}
+
+h2 {
+    font-size: 28px;
+    background: linear-gradient(90deg, #a855f7, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+h3 {
+    color: #c084fc;
+    letter-spacing: 0.5px;
+}
+
+.project-admin-card,
+.certificate-admin-card,
+.message-card {
+    background: linear-gradient(145deg, #1c1c2b, #20203a);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+h1, h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+h3 {
+    font-weight: 500;
+}
+
+.section-primary {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 50px;
+    margin-bottom: 25px;
+    color: #ffffff;
+}
+
+.section-secondary {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 40px;
+    margin-bottom: 15px;
+    color: #c084fc;
+    letter-spacing: 0.5px;
+}
+
+h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.admin-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 40px;
+    background: #141421;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+}
+
+.project-admin-card,
+.certificate-admin-card,
+.message-card,
+.skill-admin-card {
+    background: #1f1f35;
+    border: 1px solid rgba(168,85,247,0.25);
+}
+
+.admin-card {
+    background: linear-gradient(145deg, #1a1a2f, #22224a);
+    border: 1px solid rgba(168,85,247,0.3);
+}
+</style>
+</head>
+<body>
+    <div class="admin-container">
+
+<h2 id="adminLoginTitle">Admin Login</h2>
+
+<div id="loginSection">
+    <input type="email" id="adminEmail" placeholder="Email">
+    <input type="password" id="adminPassword" placeholder="Password">
+    <button id="loginBtn">Login</button>
+</div>
+
+<div id="adminPanel" style="display:none;">
+    <h2>Welcome Parthajit</h2>
+    <button id="logoutBtn">Logout</button>
+
+    <div class="admin-card">
+        <h3 class="section-primary">Add Project</h3>
+
+        <div class="admin-grid">
+            <input type="text" id="projectTitle" placeholder="Project Title">
+            <input type="text" id="shortDesc" placeholder="Short Description (for preview)">
+            <textarea id="projectFullDesc" placeholder="Full Description"></textarea>
+
+            <input type="text" id="projectTechStack" placeholder="Tech Stack (comma separated)">
+            <input type="text" id="projectDataset" placeholder="Dataset (optional)">
+
+            <input type="text" id="projectGithub" placeholder="GitHub Link">
+            <input type="text" id="projectPaper" placeholder="Research Paper Link (optional)">
+
+            <input type="text" id="projectScreenshots" placeholder="Screenshot filenames (comma separated)">
+            <input type="text" id="projectFileName" placeholder="Preview File Name">
+        </div>
+
+        <button id="addProjectBtn" class="admin-btn">Add Project</button>
+    </div>
+
+    <h3 class="section-secondary">Existing Projects</h3>
+    <div id="adminProjectsContainer"></div>
+    
+    
+    <h3 class="section-primary">Add Certificate</h3>
+    <input type="text" id="certTitle" placeholder="Certificate Title">
+    <input type="text" id="certIssuer" placeholder="Issued By">
+    <input type="text" id="certFileName" placeholder="File name (example: isi_cert.pdf)">
+    <button id="addCertBtn">Add Certificate</button>
+
+    <h3 class="section-secondary">Existing Certificates</h3>
+    <div id="adminCertificatesContainer"></div>
+
+    <h3 class="section-primary">Add Skill</h3>
+
+    <input type="text" id="skillName" placeholder="Skill Name">
+    <input type="text" id="skillIcon" placeholder="Icon (emoji like 🚀)">
+    <button id="addSkillBtn">Add Skill</button>
+
+    <h3 class="section-secondary">Existing Skills</h3>
+    <div id="adminSkillsContainer"></div>
+
+    <h3 class="section-primary">Messages</h3>
+    <div id="messagesContainer"></div>
+
+</div>
+
+<script type="module" src="admin.js"></script>
+</div>
+</body>
+</html>
