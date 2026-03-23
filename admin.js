@@ -35,6 +35,9 @@ const auth = getAuth(app);
 ========================= */
 let editingProjectId = null;
 let editingCertificateId = null;
+let editingAchievementId = null;
+let editingResearchId = null;
+
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -72,6 +75,8 @@ document.addEventListener("DOMContentLoaded", () => {
         loadProjects();
         loadCertificates();
         loadSkills();
+        loadAchievements();
+        loadResearch();
     } else {
         loginSection.style.display = "block";
         adminPanel.style.display = "none";
@@ -79,9 +84,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+
+    function setupEmojiPicker(pickerId, inputId) {
+        const picker = document.getElementById(pickerId);
+        const input = document.getElementById(inputId);
+
+        if (!picker || !input) return; // safety
+
+        picker.querySelectorAll("span").forEach(span => {
+            span.addEventListener("click", () => {
+
+                // remove previous selection
+                picker.querySelectorAll("span").forEach(s => s.classList.remove("active"));
+
+                // set new
+                span.classList.add("active");
+                input.value = span.dataset.icon;
+            });
+        });
+    }
+
+    // initialize
+    setupEmojiPicker("achievementIconPicker", "achievementIcon");
+    setupEmojiPicker("researchIconPicker", "researchIcon");
+
+
 });
 
-    // ➕ ADD PROJECT
     // ➕ ADD PROJECT
 document.getElementById("addProjectBtn").addEventListener("click", async () => {
 
@@ -234,6 +263,140 @@ document.getElementById("addCertBtn").addEventListener("click", async () => {
     });
 
 
+// ➕ ADD ACHIEVEMENT
+document.getElementById("addAchievementBtn").addEventListener("click", async () => {
+
+    const icon = document.getElementById("achievementIcon").value.trim();
+    const title = document.getElementById("achievementTitle").value.trim();
+    const subtitle = document.getElementById("achievementSubtitle").value.trim();
+    const description = document.getElementById("achievementDesc").value.trim();
+    const year = document.getElementById("achievementYear").value.trim();
+
+    if (!title) {
+        alert("Enter title");
+        return;
+    }
+
+    try {
+
+        // 🔁 UPDATE MODE
+        if (editingAchievementId) {
+
+            await updateDoc(doc(db, "achievements", editingAchievementId), {
+                icon: icon || null,
+                title,
+                subtitle: subtitle || null,
+                description: description || null,
+                year: year || null,
+                updatedAt: new Date()
+            });
+
+            editingAchievementId = null;
+            document.getElementById("addAchievementBtn").textContent = "Add Achievement";
+            loadAchievements();
+            alert("Achievement Updated");
+            return;
+        }
+
+        // ➕ ADD MODE
+        await addDoc(collection(db, "achievements"), {
+            icon: icon || null,
+            title,
+            subtitle: subtitle || null,
+            description: description || null,
+            year: year || null,
+            createdAt: new Date()
+        });
+
+        alert("Achievement Added");
+
+        // 🧹 Clear fields
+        document.getElementById("achievementIcon").value = "";
+        document.getElementById("achievementTitle").value = "";
+        document.getElementById("achievementSubtitle").value = "";
+        document.getElementById("achievementDesc").value = "";
+        document.getElementById("achievementYear").value = "";
+
+        loadAchievements();
+
+    } catch (error) {
+        console.error(error);
+        alert("Error adding achievement");
+    }
+});
+
+// ➕ ADD RESEARCH
+document.getElementById("addResearchBtn").addEventListener("click", async () => {
+
+    const icon = (document.getElementById("researchIcon").value || "").trim();
+    const title = document.getElementById("researchTitle").value.trim();
+    const subtitle = document.getElementById("researchSubtitle").value.trim();
+    const description = document.getElementById("researchDesc").value.trim();
+    const paper = document.getElementById("researchPaper").value.trim();
+    const github = document.getElementById("researchGithub").value.trim();
+
+    if (!title) {
+        alert("Enter title");
+        return;
+    }
+
+    try {
+
+        const researchData = {
+            icon: icon || "🔬",   // ✅ fallback icon (important)
+            title,
+            subtitle: subtitle || "",
+            description: description || "",
+            paper: paper || "",
+            github: github || "",
+            updatedAt: new Date()
+        };
+
+        // 🔁 UPDATE MODE
+        if (editingResearchId) {
+
+            await updateDoc(doc(db, "research", editingResearchId), researchData);
+
+            editingResearchId = null;
+            document.getElementById("addResearchBtn").textContent = "Add Research";
+
+            loadResearch();
+            alert("Research Updated");
+            return;
+        }
+
+        // ➕ ADD MODE
+        await addDoc(collection(db, "research"), {
+            ...researchData,
+            createdAt: new Date()
+        });
+
+        alert("Research Added");
+
+        // 🧹 Clear fields
+        document.getElementById("researchIcon").value = "";
+        document.getElementById("researchTitle").value = "";
+        document.getElementById("researchSubtitle").value = "";
+        document.getElementById("researchDesc").value = "";
+        document.getElementById("researchPaper").value = "";
+        document.getElementById("researchGithub").value = "";
+
+        // 🧹 REMOVE ACTIVE EMOJI SELECTION (IMPORTANT)
+        document.querySelectorAll("#researchIconPicker span")
+            .forEach(s => s.classList.remove("active"));
+
+        loadResearch();
+
+    } catch (error) {
+        console.error("Research Error:", error);
+        alert("Error adding/updating research");
+    }
+});
+
+
+
+
+
 // 📩 LOAD MESSAGES
 async function loadMessages() {
     const container = document.getElementById("messagesContainer");
@@ -358,6 +521,110 @@ async function loadSkills() {
     });
 }
 
+// 🏆 LOAD ACHIEVEMENTS
+async function loadAchievements() {
+    const container = document.getElementById("adminAchievementsContainer");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    const querySnapshot = await getDocs(collection(db, "achievements"));
+
+    querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        const id = docSnap.id;
+
+       container.innerHTML += `
+<div class="message-card">
+
+    <button class="message-delete" onclick="deleteAchievement('${id}')">
+        Delete
+    </button>
+
+    <div class="message-name">
+        ${data.icon || "🏆"} ${data.title}
+    </div>
+
+    <div class="message-email">
+        ${data.subtitle || ""} ${data.year ? " • " + data.year : ""}
+    </div>
+
+    <div class="message-text">
+        ${data.description || ""}
+    </div>
+
+    <button class="edit-btn" style="margin-top:10px;" 
+        onclick="editAchievement('${id}')">
+        Edit
+    </button>
+
+</div>
+`;
+    });
+}
+
+
+// 🔬 LOAD RESEARCH
+async function loadResearch() {
+    const container = document.getElementById("adminResearchContainer");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    const querySnapshot = await getDocs(collection(db, "research"));
+
+    querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        const id = docSnap.id;
+
+        container.innerHTML += `
+<div class="message-card">
+
+    <button class="message-delete" onclick="deleteResearch('${id}')">
+        Delete
+    </button>
+
+    <div class="message-name">
+        ${data.icon || "🔬"} ${data.title}
+    </div>
+
+    <div class="message-email">
+        ${data.subtitle || ""}
+    </div>
+
+    <div class="message-text">
+        ${data.description || ""}
+    </div>
+
+    <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+        ${
+            data.paper 
+            ? `<a href="${data.paper}" target="_blank" class="btn-small">Paper</a>` 
+            : ""
+        }
+
+        ${
+            data.github 
+            ? `<a href="${data.github}" target="_blank" class="btn-small">GitHub</a>` 
+            : ""
+        }
+    </div>
+
+    <button class="edit-btn" style="margin-top:10px;" 
+        onclick="editResearch('${id}')">
+        Edit
+    </button>
+
+</div>
+`;
+    });
+}
+
+
+
+
+
+
 // ❌ DELETE FUNCTIONS
 window.deleteProject = async function(id) {
     await deleteDoc(doc(db, "projects", id));
@@ -376,6 +643,20 @@ window.deleteSkill = async function(id) {
     alert("Skill Deleted");
     loadSkills();
 };
+
+window.deleteAchievement = async function(id) {
+    await deleteDoc(doc(db, "achievements", id));
+    loadAchievements();
+};
+
+window.deleteResearch = async function(id) {
+    await deleteDoc(doc(db, "research", id));
+    loadResearch();
+};
+
+
+
+// ❌ EDIT FUNCTIONS
 
 window.editProject = async function(id) {
 
@@ -417,8 +698,44 @@ window.editCertificate = async function(id) {
     document.getElementById("addCertBtn").textContent = "Update Certificate";
 };
 
+window.editAchievement = async function(id) {
+    const docSnap = await getDoc(doc(db, "achievements", id));
+    const data = docSnap.data();
+
+    document.getElementById("achievementIcon").value = data.icon || "";
+document.getElementById("achievementTitle").value = data.title || "";
+document.getElementById("achievementSubtitle").value = data.subtitle || "";
+document.getElementById("achievementDesc").value = data.description || "";
+document.getElementById("achievementYear").value = data.year || "";
+
+    editingAchievementId = id;
+    document.getElementById("addAchievementBtn").textContent = "Update Achievement";
+};
+
+window.editResearch = async function(id) {
+    const docSnap = await getDoc(doc(db, "research", id));
+    const data = docSnap.data();
+
+   const icon = document.getElementById("researchIcon").value.trim();
+const title = document.getElementById("researchTitle").value.trim();
+const subtitle = document.getElementById("researchSubtitle").value.trim();
+const description = document.getElementById("researchDesc").value.trim();
+const paper = document.getElementById("researchPaper").value.trim();
+const github = document.getElementById("researchGithub").value.trim();
+
+    editingResearchId = id;
+    document.getElementById("addResearchBtn").textContent = "Update Research";
+};
+
+
+
+
+
+
 
 window.deleteMessage = async function(id) {
     await deleteDoc(doc(db, "messages", id));
     loadMessages();
 };
+
+

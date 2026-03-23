@@ -25,7 +25,7 @@ const db = getFirestore(app);
 /* =========================
    🔹 DOM READY
 ========================= */
-
+let isProjectGridView = false;
 document.addEventListener('DOMContentLoaded', () => {
 
 
@@ -149,42 +149,69 @@ document.addEventListener('DOMContentLoaded', () => {
         start3DCarousel();
     }
 
-    function start3DCarousel() {
-        const items = document.querySelectorAll(".project-item");
-        const carousel = document.getElementById("carouselView");
-        if (!items.length || !carousel) return;
+    let carouselInterval = null; // 🔥 GLOBAL
+    
 
-        let current = 0;
-        let interval;
 
-        function updateCarousel() {
-            items.forEach((item, index) => {
-                item.classList.remove("active", "prev", "next", "hidden");
+function start3DCarousel() {
 
-                if (index === current) item.classList.add("active");
-                else if (index === (current + 1) % items.length) item.classList.add("next");
-                else if (index === (current - 1 + items.length) % items.length) item.classList.add("prev");
-                else item.classList.add("hidden");
-            });
-        }
+    // ❌ STOP if grid mode is ON
+    if (isProjectGridView) return;
 
-        function startAutoSlide() {
-            interval = setInterval(() => {
-                current = (current + 1) % items.length;
-                updateCarousel();
-            }, 3000);
-        }
+    const items = document.querySelectorAll(".project-item");
+    const carousel = document.getElementById("carouselView");
+    if (!items.length || !carousel) return;
 
-        function stopAutoSlide() {
-            clearInterval(interval);
-        }
+    let current = 0;
 
-        updateCarousel();
-        startAutoSlide();
+    function updateCarousel() {
 
-        carousel.addEventListener("mouseenter", stopAutoSlide);
-        carousel.addEventListener("mouseleave", startAutoSlide);
+        // ❌ STOP updating if grid mode ON
+        if (isProjectGridView) return;
+
+        items.forEach((item, index) => {
+            item.classList.remove("active", "prev", "next", "hidden");
+
+            if (index === current) item.classList.add("active");
+            else if (index === (current + 1) % items.length) item.classList.add("next");
+            else if (index === (current - 1 + items.length) % items.length) item.classList.add("prev");
+            else item.classList.add("hidden");
+        });
     }
+
+    function startAutoSlide() {
+        carouselInterval = setInterval(() => {
+
+            // ❌ STOP if grid mode ON
+            if (isProjectGridView) return;
+
+            current = (current + 1) % items.length;
+            updateCarousel();
+
+        }, 3000);
+    }
+
+    function stopAutoSlide() {
+        clearInterval(carouselInterval);
+    }
+
+    updateCarousel();
+    startAutoSlide();
+
+    carousel.addEventListener("mouseenter", stopAutoSlide);
+    carousel.addEventListener("mouseleave", startAutoSlide);
+}
+
+
+function stopCarouselAndShowAll() {
+    clearInterval(carouselInterval);
+
+    const items = document.querySelectorAll(".project-item");
+
+    items.forEach(item => {
+        item.classList.remove("active", "prev", "next", "hidden");
+    });
+}
 
     /* =========================
        🔹 CERTIFICATES
@@ -272,6 +299,69 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+
+
+/* =========================
+   🏆 ACHIEVEMENTS
+========================== */
+
+async function loadAchievements() {
+    const container = document.getElementById("achievementsContainer");
+    if (!container) return;
+
+    const snapshot = await getDocs(collection(db, "achievements"));
+    container.innerHTML = "";
+
+    snapshot.forEach(doc => {
+        const data = doc.data();
+
+        container.innerHTML += `
+            <div class="achievement-card">
+                <div class="ach-icon">${data.icon || "🏆"}</div>
+                <h3>${data.title}</h3>
+                <p class="ach-main">${data.subtitle || ""}</p>
+                <p class="ach-sub">${data.description || ""}</p>
+            </div>
+        `;
+    });
+}
+
+
+
+/* =========================
+   🔬 RESEARCH
+========================== */
+
+async function loadResearch() {
+    const container = document.getElementById("researchContainer");
+    if (!container) return;
+
+    const snapshot = await getDocs(collection(db, "research"));
+    container.innerHTML = "";
+
+    snapshot.forEach(doc => {
+        const data = doc.data();
+
+        container.innerHTML += `
+            <div class="research-card">
+                <div class="research-icon">${data.icon || "📄"}</div>
+                <h3>${data.title}</h3>
+                <p class="research-main">${data.subtitle || ""}</p>
+                <p class="research-sub">${data.description || ""}</p>
+
+                <div class="research-links">
+                    ${data.paper ? `<a href="${data.paper}" class="btn-small" target="_blank">View Paper</a>` : ""}
+                    ${data.github ? `<a href="${data.github}" class="btn-small" target="_blank">GitHub</a>` : ""}
+                </div>
+            </div>
+        `;
+    });
+}
+
+
+
+
+
     /* =========================
        🔹 CONTACT FORM
     ========================== */
@@ -326,22 +416,121 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /* =========================
-       🔹 SEARCH (FINAL VERSION)
-    ========================== */
-
+  
    
     /* =========================
        🔹 INIT
     ========================== */
 
     async function init() {
-        await loadProjects();
-        await loadCertificates();
-        await loadSkills();
-        setupSearch();
-    }
+    await loadProjects();
+    await loadCertificates();
+    await loadSkills();
+    await loadAchievements();
+    await loadResearch();
+
+    setupProjectToggle();   // ✅ ADD THIS
+    setupCertToggle();      // (optional, since yours works)
+    setupProjectToggle();
+}
 
     init();
+    
+
+
+    
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    /* =========================
+       🔥 PROJECT TOGGLE
+    ========================== */
+
+    const toggleBtn = document.getElementById("toggleViewBtn");
+const projectsContainer = document.getElementById("projectsContainer");
+const carousel = document.getElementById("carouselView");
+
+if (toggleBtn && projectsContainer && carousel) {
+    let isGridView = false;
+
+    toggleBtn.addEventListener("click", () => {
+        isGridView = !isGridView;
+
+        if (isGridView) {
+            // 👉 disable carousel behavior
+            carousel.classList.add("grid-mode");
+
+            projectsContainer.classList.add("projects-grid");
+            toggleBtn.textContent = "Show Less";
+        } else {
+            carousel.classList.remove("grid-mode");
+
+            projectsContainer.classList.remove("projects-grid");
+            toggleBtn.textContent = "See All";
+        }
+    });
+}
+
+
+    /* =========================
+       🔥 CERTIFICATE TOGGLE
+    ========================== */
+
+    const certBtn = document.getElementById("certToggleBtn");
+    const certContainer = document.getElementById("certificatesContainer");
+
+    if (certBtn && certContainer) {
+        let isGrid = false;
+
+        certBtn.addEventListener("click", () => {
+            isGrid = !isGrid;
+
+            certContainer.classList.toggle("cert-grid");
+
+            certBtn.textContent = isGrid ? "Show Less" : "See All";
+        });
+    }
+
+
+    function setupProjectToggle() {
+    const toggleBtn = document.getElementById("toggleViewBtn");
+    const container = document.getElementById("projectsContainer");
+
+    if (!toggleBtn || !container) return;
+
+    toggleBtn.addEventListener("click", () => {
+
+        isProjectGridView = !isProjectGridView;
+
+        if (isProjectGridView) {
+
+            // 🛑 STOP carousel
+            clearInterval(carouselInterval);
+
+            // 🧹 REMOVE ALL CLASSES
+            document.querySelectorAll(".project-item").forEach(item => {
+                item.classList.remove("active", "prev", "next", "hidden");
+            });
+
+            // 🎯 SHOW GRID
+            container.classList.add("projects-grid");
+
+            toggleBtn.textContent = "Show Less";
+
+        } else {
+
+            // 🔄 BACK TO CAROUSEL
+            container.classList.remove("projects-grid");
+
+            start3DCarousel();
+
+            toggleBtn.textContent = "See All";
+        }
+    });
+}
+
+
 
 });

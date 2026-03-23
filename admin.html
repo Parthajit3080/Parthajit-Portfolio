@@ -464,72 +464,704 @@ h1, h2, h3 {
     background: linear-gradient(145deg, #1a1a2f, #22224a);
     border: 1px solid rgba(168,85,247,0.3);
 }
+
+/* =========================
+   🏆 ACHIEVEMENT / RESEARCH CARDS
+========================= */
+
+.admin-modern-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+
+    border-radius: 12px;
+    background: linear-gradient(145deg, #1c1c2b, #25253a);
+    border: 1px solid rgba(168,85,247,0.3);
+
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    transition: 0.25s ease;
+}
+
+.admin-modern-card:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 10px 30px rgba(168,85,247,0.3);
+}
+
+/* LEFT CONTENT */
+.admin-modern-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-modern-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.admin-modern-sub {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 3px;
+}
+
+/* RIGHT ACTIONS */
+.admin-modern-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.admin-modern-actions button {
+    padding: 5px 12px;
+    font-size: 11px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+/* Edit */
+.admin-modern-actions .edit-btn {
+    background: #2563eb;
+    color: white;
+}
+
+/* Delete */
+.admin-modern-actions .delete-btn {
+    background: #dc2626;
+    color: white;
+}
+
+.admin-modern-actions button:hover {
+    opacity: 0.85;
+}
+
+/* INPUT ROW ALIGNMENT FIX */
+#achievementTitle,
+#achievementDesc,
+#achievementYear,
+#researchTitle,
+#researchDesc,
+#researchLink {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+#adminAchievementsContainer,
+#adminResearchContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.admin-grid textarea {
+    grid-column: span 2;
+    min-height: 120px;
+}
+
+.admin-grid input,
+.admin-grid textarea {
+    background: #18182a;
+    border: 1px solid #2e2e45;
+    padding: 14px;
+    border-radius: 10px;
+    color: white;
+    transition: 0.25s ease;
+}
+
+.admin-grid input:focus,
+.admin-grid textarea:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 12px rgba(168,85,247,0.4);
+    outline: none;
+}
+
+.icon-select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* REMOVE DEFAULT LOOK */
+.icon-select-wrapper select {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+
+    background: #18182a;
+    border: 1px solid #2e2e45;
+    color: white;
+
+    font-size: 16px;
+    cursor: pointer;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    transition: 0.25s ease;
+}
+
+/* FOCUS GLOW */
+.icon-select-wrapper select:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 12px rgba(168,85,247,0.4);
+    outline: none;
+}
+
+/* CUSTOM DROPDOWN ARROW */
+.icon-select-wrapper::after {
+    content: "⌄";
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    pointer-events: none;
+}
+
+/* MAKE EMOJI BIGGER */
+.icon-select-wrapper select {
+    font-size: 18px;
+}
+
+.icon-select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* MATCH INPUT STYLE EXACTLY */
+.icon-select-wrapper select {
+    width: 100%;
+    height: 48px;
+
+    padding: 0 14px;
+    border-radius: 10px;
+
+    background: #18182a;
+    border: 1px solid #2e2e45;
+    color: #aaa;
+
+    font-size: 14px;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    transition: 0.25s ease;
+}
+
+/* WHEN VALUE SELECTED */
+.icon-select-wrapper select:valid {
+    color: white;
+}
+
+/* FOCUS EFFECT (same as inputs) */
+.icon-select-wrapper select:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 12px rgba(168,85,247,0.4);
+    outline: none;
+}
+
+/* CUSTOM ARROW */
+.icon-select-wrapper::after {
+    content: "▾";
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+/* REMOVE DEFAULT ARROW (EDGE FIX) */
+select::-ms-expand {
+    display: none;
+}
+
+.emoji-picker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    height: 48px;
+    padding: 0 10px;
+
+    border-radius: 10px;
+    background: #18182a;
+    border: 1px solid #2e2e45;
+
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.emoji-picker::-webkit-scrollbar {
+    display: none;
+}
+
+/* emoji buttons */
+.emoji-picker span {
+    font-size: 18px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    flex-shrink: 0;
+}
+
+/* hover */
+.emoji-picker span:hover {
+    background: rgba(168,85,247,0.2);
+}
+
+/* selected */
+.emoji-picker span.active {
+    background: #a855f7;
+    box-shadow: 0 0 8px rgba(168,85,247,0.6);
+}
+
+.emoji-picker {
+    grid-column: span 1;
+}
+
+/* ===== CERTIFICATE BIG CONTAINER ===== */
+
+.certificate-section {
+    padding: 30px;
+    border-radius: 18px;
+    background: linear-gradient(145deg, #1a1a2f, #22224a);
+    border: 1px solid rgba(168,85,247,0.35);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    margin-top: 30px;
+}
+
+/* ===== FORM LAYOUT ===== */
+
+.cert-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+/* INPUT STYLE UPGRADE */
+
+.cert-form input {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #2e2e45;
+    background: #18182a;
+    color: white;
+    transition: 0.25s ease;
+}
+
+.cert-form input:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 10px rgba(168,85,247,0.4);
+    outline: none;
+}
+
+/* BUTTON ALIGNMENT */
+
+.cert-form button {
+    white-space: nowrap;
+}
+
+/* ===== IMPROVE EXISTING CARDS ===== */
+
+#adminCertificatesContainer {
+    margin-top: 10px;
+}
+
+/* Make cards slightly bigger and cleaner */
+
+.certificate-admin-card {
+    padding: 16px 18px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #1c1c2b, #25253a);
+    transition: 0.25s ease;
+}
+
+.certificate-admin-card:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* Better title spacing */
+
+.certificate-admin-title {
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.certificate-admin-issuer {
+    margin-top: 4px;
+}
+
+/* ===== PROJECT BIG CONTAINER ===== */
+
+.project-section {
+    padding: 35px;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #1a1a2f, #23234a);
+    border: 1px solid rgba(168,85,247,0.35);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.5);
+    margin-bottom: 40px;
+}
+
+/* ===== PROJECT FORM GRID ===== */
+
+.project-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 30px;
+}
+
+/* TEXTAREA FULL WIDTH */
+.project-form textarea {
+    grid-column: span 2;
+    min-height: 120px;
+}
+
+/* INPUT STYLE (MATCH YOUR THEME) */
+.project-form input,
+.project-form textarea {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #2e2e45;
+    background: #18182a;
+    color: white;
+    transition: 0.25s ease;
+}
+
+/* FOCUS GLOW */
+.project-form input:focus,
+.project-form textarea:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 12px rgba(168,85,247,0.4);
+    outline: none;
+}
+
+/* BUTTON ALIGN */
+.project-form button {
+    grid-column: span 2;
+    width: fit-content;
+}
+
+/* ===== EXISTING PROJECTS AREA ===== */
+
+#adminProjectsContainer {
+    margin-top: 10px;
+}
+
+/* CARD UPGRADE */
+
+.project-admin-card {
+    padding: 16px 18px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #1c1c2b, #25253a);
+    transition: 0.25s ease;
+}
+
+.project-admin-card:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+}
+
+/* ===== SKILL BIG CONTAINER ===== */
+
+.skill-section {
+    padding: 30px;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #1a1a2f, #23234a);
+    border: 1px solid rgba(168,85,247,0.35);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.5);
+    margin-bottom: 40px;
+}
+
+/* ===== FORM LAYOUT ===== */
+
+.skill-form {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* INPUT STYLE */
+
+.skill-form input {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #2e2e45;
+    background: #18182a;
+    color: white;
+    width: 220px;
+    transition: 0.25s ease;
+}
+
+.skill-form input:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 10px rgba(168,85,247,0.4);
+    outline: none;
+}
+
+/* BUTTON ALIGN */
+
+.skill-form button {
+    height: 42px;
+}
+
+/* ===== EXISTING SKILLS BOX ===== */
+
+#adminSkillsContainer {
+    margin-top: 10px;
+    padding: 20px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(168,85,247,0.25);
+}
+
+/* SKILL PILLS ENHANCEMENT */
+
+.skill-admin-card {
+    background: linear-gradient(145deg, #1c1c2b, #25253a);
+    border-radius: 25px;
+    padding: 8px 14px;
+    transition: 0.25s ease;
+}
+
+.skill-admin-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(168,85,247,0.4);
+}
+
+/* DELETE BUTTON IMPROVE */
+
+.skill-admin-card button {
+    background: #ef4444;
+    font-weight: bold;
+}
+
+.skill-admin-card button:hover {
+    background: #dc2626;
+}
 </style>
 </head>
+
+
+
+
+
+
+
+
+
+
+
+
 <body>
     <div class="admin-container">
 
-<h2 id="adminLoginTitle">Admin Login</h2>
+        <h2 id="adminLoginTitle">Admin Login</h2>
 
-<div id="loginSection">
-    <input type="email" id="adminEmail" placeholder="Email">
-    <input type="password" id="adminPassword" placeholder="Password">
-    <button id="loginBtn">Login</button>
-</div>
-
-<div id="adminPanel" style="display:none;">
-    <h2>Welcome Parthajit</h2>
-    <button id="logoutBtn">Logout</button>
-
-    <div class="admin-card">
-        <h3 class="section-primary">Add Project</h3>
-
-        <div class="admin-grid">
-            <input type="text" id="projectTitle" placeholder="Project Title">
-            <input type="text" id="shortDesc" placeholder="Short Description (for preview)">
-            <textarea id="projectFullDesc" placeholder="Full Description"></textarea>
-
-            <input type="text" id="projectTechStack" placeholder="Tech Stack (comma separated)">
-            <input type="text" id="projectDataset" placeholder="Dataset (optional)">
-
-            <input type="text" id="projectGithub" placeholder="GitHub Link">
-            <input type="text" id="projectPaper" placeholder="Research Paper Link (optional)">
-
-            <input type="text" id="projectScreenshots" placeholder="Screenshot filenames (comma separated)">
-            <input type="text" id="projectFileName" placeholder="Preview File Name">
+        <div id="loginSection">
+            <input type="email" id="adminEmail" placeholder="Email">
+            <input type="password" id="adminPassword" placeholder="Password">
+            <button id="loginBtn">Login</button>
         </div>
 
-        <button id="addProjectBtn" class="admin-btn">Add Project</button>
+        <div id="adminPanel" style="display:none;">
+            <h1>Welcome Parthajit</h1>
+            <button id="logoutBtn">Logout</button>
+
+            <!-- ========================= -->
+            <!-- 📦 PROJECTS -->
+            <!-- ========================= -->
+
+            <div class="admin-card project-section">
+
+                <h3 class="section-primary">Projects</h3>
+
+                <!-- ADD PROJECT -->
+                <div class="project-form">
+                    <input type="text" id="projectTitle" placeholder="Project Title">
+                    <input type="text" id="shortDesc" placeholder="Short Description (for preview)">
+                    
+                    <textarea id="projectFullDesc" placeholder="Full Description"></textarea>
+
+                    <input type="text" id="projectTechStack" placeholder="Tech Stack (comma separated)">
+                    <input type="text" id="projectDataset" placeholder="Dataset (optional)">
+
+                    <input type="text" id="projectGithub" placeholder="GitHub Link">
+                    <input type="text" id="projectPaper" placeholder="Research Paper Link (optional)">
+
+                    <input type="text" id="projectScreenshots" placeholder="Screenshot filenames (comma separated)">
+                    <input type="text" id="projectFileName" placeholder="Preview File Name">
+
+                    <button id="addProjectBtn" class="admin-btn">Add Project</button>
+                </div>
+
+                <!-- EXISTING PROJECTS -->
+                <h3 class="section-secondary">Existing Projects</h3>
+                <div id="adminProjectsContainer"></div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- 📜 CERTIFICATES -->
+            <!-- ========================= -->
+
+           <div class="admin-card certificate-section">
+
+            <h3 class="section-primary">Certificates</h3>
+
+            <!-- ADD CERTIFICATE FORM -->
+            <div class="cert-form">
+                <input type="text" id="certTitle" placeholder="Certificate Title">
+                <input type="text" id="certIssuer" placeholder="Issued By">
+                <input type="text" id="certFileName" placeholder="File name (example: isi_cert.pdf)">
+                <button id="addCertBtn" class="admin-btn">Add Certificate</button>
+            </div>
+
+            <!-- EXISTING CERTIFICATES -->
+            <h3 class="section-secondary">Existing Certificates</h3>
+            <div id="adminCertificatesContainer"></div>
+
+        </div>
+
+
+            <!-- ========================= -->
+            <!-- 🧠 SKILLS -->
+            <!-- ========================= -->
+
+           <div class="admin-card skill-section">
+
+                <h3 class="section-primary">Skills</h3>
+
+                <!-- ADD SKILL -->
+                <div class="skill-form">
+                    <input type="text" id="skillName" placeholder="Skill Name">
+                    <input type="text" id="skillIcon" placeholder="Icon (emoji like 🚀)">
+                    <button id="addSkillBtn" class="admin-btn">Add Skill</button>
+                </div>
+
+                <!-- EXISTING SKILLS -->
+                <h3 class="section-secondary">Existing Skills</h3>
+                <div id="adminSkillsContainer"></div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- 🏆 ACHIEVEMENTS -->
+            <!-- ========================= -->
+
+            <div class="admin-card">
+
+                <h3 class="section-primary">Add Achievement</h3>
+
+                <div class="admin-grid">
+
+                    <!-- EMOJI PICKER -->
+                    <div class="emoji-picker" id="achievementIconPicker">
+                        <span data-icon="🏆">🏆</span>
+                        <span data-icon="🎖️">🎖️</span>
+                        <span data-icon="🥇">🥇</span>
+                        <span data-icon="🚀">🚀</span>
+                        <span data-icon="⭐">⭐</span>
+                        <span data-icon="🏅">🏅</span>
+                        <span data-icon="🎯">🎯</span>
+                        <span data-icon="📜">📜</span>
+                        <span data-icon="🔥">🔥</span>
+                        <span data-icon="💡">💡</span>
+                    </div>
+
+                    <input type="hidden" id="achievementIcon">
+
+                    <input type="text" id="achievementTitle" placeholder="Achievement Title">
+                    <input type="text" id="achievementSubtitle" placeholder="Smaller Title">
+
+                    <input type="text" id="achievementYear" placeholder="Year (optional)">
+
+                    <textarea id="achievementDesc" placeholder="Short Description"></textarea>
+
+                </div>
+
+                <button id="addAchievementBtn" class="admin-btn">Add Achievement</button>
+
+                <h3 class="section-secondary">Existing Achievements</h3>
+                <div id="adminAchievementsContainer"></div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- 🔬 RESEARCH -->
+            <!-- ========================= -->
+
+            <div class="admin-card">
+
+                <h3 class="section-primary">Add Research</h3>
+
+                <div class="admin-grid">
+
+                    <!-- EMOJI PICKER -->
+                    <div class="emoji-picker" id="researchIconPicker">
+                        <span data-icon="🔬">🔬</span>
+                        <span data-icon="📄">📄</span>
+                        <span data-icon="🧠">🧠</span>
+                        <span data-icon="📊">📊</span>
+                        <span data-icon="💻">💻</span>
+                        <span data-icon="🛰️">🛰️</span>
+                        <span data-icon="⚙️">⚙️</span>
+                        <span data-icon="📚">📚</span>
+                        <span data-icon="🌐">🌐</span>
+                        <span data-icon="🔗">🔗</span>
+                    </div>
+
+                    <input type="hidden" id="researchIcon">
+
+                    <input type="text" id="researchTitle" placeholder="Research Title">
+                    <input type="text" id="researchSubtitle" placeholder="Smaller Title">
+
+                    <input type="text" id="researchPaper" placeholder="Paper Link">
+                    <input type="text" id="researchGithub" placeholder="GitHub Link">
+
+                    <textarea id="researchDesc" placeholder="Description"></textarea>
+
+                </div>
+
+                <button id="addResearchBtn" class="admin-btn">Add Research</button>
+
+                <h3 class="section-secondary">Existing Research</h3>
+                <div id="adminResearchContainer"></div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- 📩 MESSAGES -->
+            <!-- ========================= -->
+
+            <h3 class="section-primary">Messages</h3>
+            <div id="messagesContainer"></div>
+
+        </div>
+
+        <script type="module" src="admin.js"></script>
+
     </div>
-
-    <h3 class="section-secondary">Existing Projects</h3>
-    <div id="adminProjectsContainer"></div>
-    
-    
-    <h3 class="section-primary">Add Certificate</h3>
-    <input type="text" id="certTitle" placeholder="Certificate Title">
-    <input type="text" id="certIssuer" placeholder="Issued By">
-    <input type="text" id="certFileName" placeholder="File name (example: isi_cert.pdf)">
-    <button id="addCertBtn">Add Certificate</button>
-
-    <h3 class="section-secondary">Existing Certificates</h3>
-    <div id="adminCertificatesContainer"></div>
-
-    <h3 class="section-primary">Add Skill</h3>
-
-    <input type="text" id="skillName" placeholder="Skill Name">
-    <input type="text" id="skillIcon" placeholder="Icon (emoji like 🚀)">
-    <button id="addSkillBtn">Add Skill</button>
-
-    <h3 class="section-secondary">Existing Skills</h3>
-    <div id="adminSkillsContainer"></div>
-
-    <h3 class="section-primary">Messages</h3>
-    <div id="messagesContainer"></div>
-
-</div>
-
-<script type="module" src="admin.js"></script>
-</div>
 </body>
-</html>

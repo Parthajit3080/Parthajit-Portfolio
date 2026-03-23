@@ -1813,3 +1813,110 @@ body.light-mode .hero {
 body.light-mode {
     --dark-bg:  #a5bfe2;
 }
+
+/* =========================
+   🎯 SMOOTH TRANSITIONS
+========================= */
+
+body,
+section,
+.project-item,
+.certificate-item,
+.edu-row,
+.achievement-card,
+.research-card {
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* OVERRIDE IN LIGHT MODE */
+body.light-mode .hero {
+    background: linear-gradient(135deg, #878ae7, #8d7ce2);
+}
+
+body.light-mode {
+    --dark-bg:  #a5bfe2;
+}
+
+
+.projects-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.cert-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+
+/* 🔥 override carousel when grid active */
+.carousel-3d.grid-mode {
+    overflow: visible !important;
+    perspective: none !important;
+}
+
+/* 🔥 reset track */
+.carousel-3d.grid-mode .carousel-track {
+    transform: none !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* 🔥 disable 3D card effects */
+.carousel-3d.grid-mode .project-card {
+    transform: none !important;
+    position: relative !important;
+}
+
+
+/* 🔥 PROJECT GRID */
+.projects-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 20px;
+}
+
+/* 🔥 OVERRIDE CAROUSEL */
+.carousel-track.projects-grid {
+    transform: none !important;
+    position: static !important;
+}
+
+/* 🔥 CERT GRID */
+.cert-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+
+/* 🚫 STOP CAROUSEL */
+.disable-carousel .carousel-track {
+    transform: none !important;
+    animation: none !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* remove 3D effects */
+.disable-carousel .project-card {
+    transform: none !important;
+    position: relative !important;
+}
+
+/* grid backup */
+.projects-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+
+.projects-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
