@@ -157,7 +157,6 @@
             <button id="toggleViewBtn" class="see-all-btn">See All</button>
         </div>
 
-```
     <!-- Enhanced Note -->
     <div class="projects-note">
         <span class="note-icon">🚀</span>
@@ -184,21 +183,24 @@
     display: flex;
     align-items: center;
     gap: 18px;
+
     margin: 1.5rem auto 3rem;
     padding: 18px 24px;
     max-width: 850px;
 
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
+    background: linear-gradient(
+        135deg,
+        #f8fbff,
+        #eef6ff
+    );
 
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-left: 4px solid #00d4ff;
+    border: 1px solid #dbeafe;
+    border-left: 5px solid #2563eb;
 
     border-radius: 16px;
 
     box-shadow:
-        0 8px 30px rgba(0, 0, 0, 0.15),
-        0 0 25px rgba(0, 212, 255, 0.08);
+        0 8px 20px rgba(0,0,0,0.08);
 
     transition: all 0.3s ease;
 }
@@ -206,27 +208,23 @@
 .projects-note:hover {
     transform: translateY(-3px);
     box-shadow:
-        0 12px 35px rgba(0, 0, 0, 0.2),
-        0 0 30px rgba(0, 212, 255, 0.15);
+        0 12px 28px rgba(0,0,0,0.12);
 }
 
 .note-icon {
     font-size: 2rem;
-    flex-shrink: 0;
 }
 
 .note-content h4 {
     margin: 0 0 6px;
+    color: #111827;
     font-size: 1rem;
     font-weight: 700;
-    color: #ffffff;
-    letter-spacing: 0.5px;
 }
 
 .note-content p {
     margin: 0;
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 0.95rem;
+    color: #4b5563;
     line-height: 1.6;
 }
 
